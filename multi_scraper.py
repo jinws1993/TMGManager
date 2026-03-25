@@ -19,13 +19,13 @@ class MultiSourceScraper:
         self.tgdb_scraper = TheGamesDBScraper(tgdb_api_key, proxy_url)
         self.proxy_url = proxy_url
     
-    def scrape_game(self, game: Game, download_video: bool = True, screenshot_count: int = 3) -> ScrapeResult:
+    def scrape_game(self, game: Game, download_video: bool = True, screenshot_count: int = 3, auto_translate: bool = False) -> ScrapeResult:
         """刮削单个游戏，使用多个数据源"""
         
         # 先尝试 RAWG
         rawg_success = False
         if self.rawg_scraper:
-            result = self.rawg_scraper.scrape_game(game, download_video, screenshot_count)
+            result = self.rawg_scraper.scrape_game(game, download_video, screenshot_count, auto_translate)
             if result.success:
                 rawg_success = True
         

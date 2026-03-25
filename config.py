@@ -22,6 +22,7 @@ class Config:
         'last_export_path': '',
         'proxy_enabled': False,
         'proxy_url': '',
+        'auto_translate': True,  # 自动翻译简介为中文
     }
     
     def __init__(self, config_path: Optional[str] = None):
@@ -135,4 +136,13 @@ class Config:
     @tgdb_api_key.setter
     def tgdb_api_key(self, value: str):
         self.config['tgdb_api_key'] = value
+        self._save_config()
+    
+    @property
+    def auto_translate(self) -> bool:
+        return self.config.get('auto_translate', True)
+    
+    @auto_translate.setter
+    def auto_translate(self, value: bool):
+        self.config['auto_translate'] = value
         self._save_config()

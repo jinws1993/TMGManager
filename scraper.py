@@ -148,7 +148,7 @@ class RAWGSraper:
             print(f"获取预告片失败: {rawg_id}, 错误: {e}")
             return None
     
-    def scrape_game(self, game: Game, download_video: bool = True, screenshot_count: int = 3) -> ScrapeResult:
+    def scrape_game(self, game: Game, download_video: bool = True, screenshot_count: int = 3, auto_translate: bool = False) -> ScrapeResult:
         """刮削单个游戏"""
         if not self.api_key:
             return ScrapeResult(
@@ -173,7 +173,19 @@ class RAWGSraper:
             
             details = self.get_game_details(rawg_id)
             if details:
-                game.description = self._clean_description(details.get('description_raw', ''))
+                description = self._clean_description(details.get('description_raw', ''))
+                
+                # 自动翻译
+                if auto_translate and description:
+                    from translator import translate_text
+                    translated = translate_text(description, self.proxy_url)
+                    if translated:
+                        game.description = translated
+                    else:
+                        game.description = description
+                else:
+                    game.description = description
+                
                 game.released = details.get('released', '')
                 game.rating = details.get('rating', 0.0)
                 

@@ -62,7 +62,8 @@ class ScrapeWorker(QThread):
             result = self.scraper.scrape_game(
                 game,
                 download_video=self.config.download_video,
-                screenshot_count=self.config.screenshot_count
+                screenshot_count=self.config.screenshot_count,
+                auto_translate=self.config.get('auto_translate', True)
             )
             
             if result.success:
@@ -158,6 +159,7 @@ class MainWindow(QMainWindow):
         left_splitter.addWidget(self.game_list_widget)
         
         self.detail_panel = DetailPanel()
+        self.detail_panel.game_updated.connect(self._on_game_updated)
         left_splitter.addWidget(self.detail_panel)
         
         left_splitter.setStretchFactor(0, 1)
@@ -167,6 +169,10 @@ class MainWindow(QMainWindow):
         
         right_panel = self._create_right_panel()
         main_layout.addWidget(right_panel, 1)
+        
+        # 设置输出目录
+        if self.config.output_directory:
+            self.detail_panel.set_output_directory(self.config.output_directory)
     
     def _create_right_panel(self):
         """创建右侧面板"""
@@ -524,6 +530,12 @@ class MainWindow(QMainWindow):
     def _on_game_selected(self, game):
         """游戏选中"""
         self.detail_panel.set_game(game)
+    
+    def _on_game_updated(self, game):
+        """游戏信息更新"""
+        # 更新游戏列表显示
+        self.game_list_widget.update_game(game)
+        self._update_counts()
     
     def _on_selection_changed(self, games):
         """选择改变"""

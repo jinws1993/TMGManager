@@ -76,6 +76,10 @@ class SettingsDialog(QDialog):
         self.skip_scraped_cb.setChecked(True)
         scrape_layout.addWidget(self.skip_scraped_cb)
         
+        self.auto_translate_cb = QCheckBox("自动翻译简介为中文")
+        self.auto_translate_cb.setChecked(True)
+        scrape_layout.addWidget(self.auto_translate_cb)
+        
         main_layout.addWidget(scrape_group)
         
         output_group = QGroupBox("输出设置")
@@ -205,6 +209,7 @@ class SettingsDialog(QDialog):
         self.download_video_cb.setChecked(self.config.download_video)
         self.screenshot_count_spin.setValue(self.config.screenshot_count)
         self.skip_scraped_cb.setChecked(self.config.get('auto_skip_scraped', True))
+        self.auto_translate_cb.setChecked(self.config.get('auto_translate', True))
         self.output_dir_edit.setText(self.config.output_directory)
         
         # 加载代理设置
@@ -229,6 +234,7 @@ class SettingsDialog(QDialog):
         self.config.download_video = self.download_video_cb.isChecked()
         self.config.screenshot_count = self.screenshot_count_spin.value()
         self.config.set('auto_skip_scraped', self.skip_scraped_cb.isChecked())
+        self.config.set('auto_translate', self.auto_translate_cb.isChecked())
         
         if self.output_dir_edit.text():
             self.config.output_directory = self.output_dir_edit.text()

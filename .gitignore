@@ -1,0 +1,19 @@
+# Build artifacts
+build/
+*.spec
+__pycache__/
+*.pyc
+*.pyo
+
+# Dist - only ignore intermediate files, keep exe
+dist/*.pdb
+dist/*.exe.manifest
+dist/*.exe.code
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

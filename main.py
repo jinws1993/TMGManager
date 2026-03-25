@@ -56,6 +56,8 @@ def main():
         
         window = MainWindow()
         window.show()
+        # 强制立即刷新显示，避免频闪
+        app.processEvents()
         logging.info("Window shown, starting event loop...")
         
         sys.exit(app.exec_())
